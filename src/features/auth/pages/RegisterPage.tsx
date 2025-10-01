@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Link, useNavigate } from 'react-router-dom';
+import { useHookFormMask } from 'use-mask-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -74,6 +75,7 @@ export function RegisterPage() {
             type: UserType.USER,
         },
     });
+    const registerWithMask = useHookFormMask(register);
 
     const userType = watch('type');
 
@@ -178,7 +180,7 @@ export function RegisterPage() {
                                     id="cpf"
                                     type="text"
                                     placeholder="000.000.000-00"
-                                    {...register('cpf')}
+                                    {...registerWithMask('cpf', ['999.999.999-99'], { required: true })}
                                     disabled={isLoading}
                                 />
                                 {errors.cpf && (
@@ -194,7 +196,7 @@ export function RegisterPage() {
                                     id="cnpj"
                                     type="text"
                                     placeholder="00.000.000/0000-00"
-                                    {...register('cnpj')}
+                                    {...registerWithMask('cnpj', ['99.999.999/9999-99'], { required: true })}
                                     disabled={isLoading}
                                 />
                                 {errors.cnpj && (
@@ -207,9 +209,8 @@ export function RegisterPage() {
                             <Label htmlFor="phone">Telefone (Opcional)</Label>
                             <Input
                                 id="phone"
-                                type="tel"
                                 placeholder="(00) 00000-0000"
-                                {...register('phone')}
+                                {...registerWithMask('phone', ['(99) 9999-9999', '(99) 99999-9999'], { required: true })}
                                 disabled={isLoading}
                             />
                             {errors.phone && (
