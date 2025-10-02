@@ -34,12 +34,7 @@ export function CreateAnimalDialog() {
 
         api.post(
             "/api/animal/register",
-            formData,
-            {
-                headers: {
-                    'Authorization': `Bearer ` //TO DO get the authorization token from the ngo adding the animal
-                }
-            }
+            formData
         )
         .then(response => {
             console.log("Animal cadastrado " + response);
