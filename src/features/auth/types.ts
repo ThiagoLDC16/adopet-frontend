@@ -1,11 +1,11 @@
-interface User {
+export interface User {
     id: number
     email: string
     name: string
     type: UserType
 }
 
-enum UserType {
+export enum UserType {
     USER = 'USER',
     ONG = 'ONG',
 }
