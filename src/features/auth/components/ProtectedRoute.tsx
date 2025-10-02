@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/features/auth/contexts/AuthContext';
 
-export function ProtectedRoute() {
-  const { isAuthenticated, isLoading } = useAuth();
+export function ProtectedRoute({ userType }: { userType?: UserType }) {
+  const { user, isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
     return (
@@ -15,7 +15,7 @@ export function ProtectedRoute() {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || (userType && userType !== user?.type)) {
     return <Navigate to="/login" replace />;
   }
 

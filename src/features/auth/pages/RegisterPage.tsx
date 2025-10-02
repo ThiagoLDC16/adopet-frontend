@@ -12,11 +12,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { api } from '@/lib/api';
 
-enum UserType {
-    USER = 'USER',
-    ONG = 'ONG',
-}
-
 const registerSchema = z
     .object({
         email: z.string().email('Email inválido'),
