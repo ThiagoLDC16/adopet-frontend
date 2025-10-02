@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { api } from '@/lib/api';
+import { UserType } from '../types';
 
 const registerSchema = z
     .object({
@@ -19,7 +20,7 @@ const registerSchema = z
         password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
         confirmPassword: z.string(),
         phone: z.string().optional(),
-        type: z.nativeEnum(UserType),
+        type: z.enum(UserType),
         cpf: z.string().optional(),
         cnpj: z.string().optional(),
     })
