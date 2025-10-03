@@ -10,6 +10,7 @@ import { useData } from '../hooks/useData';
 
 export function EditAnimalDialog({ id }: { id: string }) {
     const animalData = useData(`/api/animal/id/${id}`);
+    const [ newFiles, setNewFiles ] = useState<File[]>([])
 
     const { register, handleSubmit, setValue, reset } = useForm<EditAnimalSchema>({
         defaultValues: {
@@ -82,7 +83,7 @@ export function EditAnimalDialog({ id }: { id: string }) {
     }
 
     return (
-        <DialogContent onBlur={() => setDisplay(false)}>
+        <DialogContent>
             <DialogHeader className="text-left">
                 <DialogTitle>Editar animal</DialogTitle>
                 <DialogDescription>Edite os dados do animal</DialogDescription>
@@ -121,12 +122,20 @@ export function EditAnimalDialog({ id }: { id: string }) {
 
                 <div className="pt-4 grid grid-cols-4">
                     <Label htmlFor="midia">Fotos/vídeos</Label>
-                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
+                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => {
+                        const files = Array.from(e.target.files ?? []);
+                        setValue("midia", e.target.files as FileList, { shouldValidate: false, }); setNewFiles(files);}} />
                 </div>
 
                 <div className="pt-4 grid grid-cols-6">
-                    {animalData?.midia.map(m => (
-                        <img key={m.id} src={`${import.meta.env.VITE_API_URL}${m.url}`} className='w-32 h-32 object-cover rounded col-span-2' />
+                    {!display && <h3 className='text-sm'>Imagens atuais</h3>}
+                    {!display && animalData?.midia.map(m => (
+                        <img key={m.id} src={`${import.meta.env.VITE_API_URL}${m.url}`} className='h-18 object-cover rounded col-span-1' />
+                    ))}
+
+                    {newFiles.length > 0 && <h3 className='text-sm col-span-1 pl-2'>{!display ? "Preview" : "Imagens atuais"}</h3>}
+                    {newFiles.map((file, i) => (
+                        <img key={i} src={URL.createObjectURL(file)} className='h-18 object-cover rounded col-span-1' />
                     ))}
                 </div>
 
