@@ -1,5 +1,7 @@
+import { EditAnimalDialogButton } from "../components/EditAnimalDialogButton";
+
 export function ListAnimalsPage() {
     return (
-        <div></div>
+        <div><EditAnimalDialogButton id={'12'} /></div>
     )
 }
