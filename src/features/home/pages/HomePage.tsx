@@ -1,7 +1,7 @@
+
 export function HomePage() {
     return (
-        <div>
-            Welcome!
+        <div className="p-8">
         </div>
     )
 }
