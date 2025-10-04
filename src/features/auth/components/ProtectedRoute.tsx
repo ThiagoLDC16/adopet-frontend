@@ -4,6 +4,7 @@ import { useAuth } from '@/features/auth/contexts/AuthContext';
 export function ProtectedRoute({ userType }: { userType?: UserType }) {
   const { user, isAuthenticated, isLoading } = useAuth();
 
+  console.log(isAuthenticated, user?.type, userType)
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -14,6 +15,7 @@ export function ProtectedRoute({ userType }: { userType?: UserType }) {
       </div>
     );
   }
+
 
   if (!isAuthenticated || (userType && userType !== user?.type)) {
     return <Navigate to="/login" replace />;

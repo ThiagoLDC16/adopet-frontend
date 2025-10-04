@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useAnimals } from '../hooks/useAnimals';
 import { AnimalCard } from '../components/AnimalCard';
 import { AnimalFilters } from '../components/AnimalFilters';
-import { EditAnimalDialogButton } from "../components/EditAnimalDialogButton";
 import type { AnimalFilters as IAnimalFilters } from '../types/animal.types';
 
 export function ListAnimalsPage() {

@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useData } from '../hooks/useData';
 
-export function EditAnimalDialog({ id }: { id: string }) {
-    const animalData = useData(`/api/animal/id/${id}`);
+export function EditAnimalDialog({ id }: { id: number }) {
+    const animalData = useData(`/api/animal/${id}`);
     const [ newFiles, setNewFiles ] = useState<File[]>([])
 
     const { register, handleSubmit, setValue, reset } = useForm<EditAnimalSchema>({
@@ -25,7 +25,7 @@ export function EditAnimalDialog({ id }: { id: string }) {
 
     const [display, setDisplay] = useState(false);
 
-    const char: Array<string> = useMemo(() => animalData?.characteristics.map(c => c.characteristic.description) ?? [], [animalData]);
+    const char: Array<string> = useMemo(() => (animalData?.characteristics || []).map(c => c.characteristic.description) ?? [], [animalData]);
 
     useEffect(() => {
         if (animalData) {
@@ -129,12 +129,12 @@ export function EditAnimalDialog({ id }: { id: string }) {
 
                 <div className="pt-4 grid grid-cols-6">
                     {!display && <h3 className='text-sm'>Imagens atuais</h3>}
-                    {!display && animalData?.midia.map(m => (
+                    {!display && animalData?.midia && animalData?.midia.map(m => (
                         <img key={m.id} src={`${import.meta.env.VITE_API_URL}${m.url}`} className='h-18 object-cover rounded col-span-1' />
                     ))}
 
                     {newFiles.length > 0 && <h3 className='text-sm col-span-1 pl-2'>{!display ? "Preview" : "Imagens atuais"}</h3>}
-                    {newFiles.map((file, i) => (
+                    {newFiles && newFiles.map((file, i) => (
                         <img key={i} src={URL.createObjectURL(file)} className='h-18 object-cover rounded col-span-1' />
                     ))}
                 </div>

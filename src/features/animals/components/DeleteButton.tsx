@@ -35,7 +35,7 @@ export const DeleteButton = ({ id, name }: animalProps) => {
     return (<Dialog>
         <form>
             <DialogTrigger asChild>
-                <Button variant="destructive"><Trash size={20} /></Button>
+                <Button variant="destructive"><Trash size={14} /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

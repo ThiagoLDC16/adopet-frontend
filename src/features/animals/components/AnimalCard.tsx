@@ -1,5 +1,7 @@
 import type { Animal } from '../types/animal.types';
 import { Link } from 'react-router-dom';
+import { EditAnimalDialogButton } from './EditAnimalDialogButton';
+import { DeleteButton } from './DeleteButton';
 
 interface AnimalCardProps {
   animal: Animal;
@@ -29,9 +31,9 @@ export function AnimalCard({ animal }: AnimalCardProps) {
   return (
     <article className="card">
       <Link to={`/animals/${animal.id}`}>
-        {animal.images && animal.images.length > 0 ? (
+        {animal.midia && animal.midia.length > 0 ? (
           <img
-            src={animal.images[0]}
+            src={animal.midia[0].url}
             alt={animal.name || 'Animal'}
           />
         ) : (
@@ -48,10 +50,14 @@ export function AnimalCard({ animal }: AnimalCardProps) {
           {animal.age && ` • ${animal.age} anos`}
         </small>
         <small>{animal.description || 'Sem descrição disponível'}</small>
-        <small>
+        {/* <small>
           {animal.city || 'Cidade não informada'}, {animal.state || 'UF não informada'}
           {animal.status && ` • ${getStatusText(animal.status)}`}
-        </small>
+        </small> */}
+      </div>
+      <div className='flex justify-end gap-3'>
+          <EditAnimalDialogButton id={animal.id} />
+          <DeleteButton id={animal.id} name={animal.name} />
       </div>
     </article>
   );

@@ -3,6 +3,7 @@ import { useMyAnimals } from '../hooks/useMyAnimals';
 import { AnimalCard } from '../components/AnimalCard';
 import { AnimalFilters } from '../components/AnimalFilters';
 import type { AnimalFilters as IAnimalFilters } from '../types/animal.types';
+import { CreateAnimalDialogButton } from '../components/CreateAnimalDialogButton';
 
 export function MyAnimalsPage() {
   const { animals, loading, error, filters, updateFilters } = useMyAnimals();
@@ -101,9 +102,10 @@ export function MyAnimalsPage() {
       )}
 
       <div className="sectionLabel">Meus pets cadastrados</div>
+      <CreateAnimalDialogButton />
 
       {/* List */}
-      <section className="list" aria-label="Lista de meus animais">
+      <section className="list mt-3" aria-label="Lista de meus animais">
         {animals?.animals.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">Você ainda não cadastrou nenhum animal</p>

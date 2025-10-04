@@ -335,7 +335,7 @@ details.filter[open] .menu {
 
 .card {
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: 72px 1fr 72px;
   gap: 10px;
   padding: 10px;
   background: var(--card);
@@ -373,7 +373,7 @@ details.filter[open] .menu {
 .bottom {
   position: sticky;
   bottom: 0;
-  background: var(--accent);
+  background: var(--background);
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -408,7 +408,7 @@ details.filter[open] .menu {
 /* desktop width */
 @media (min-width: 640px) {
   .page {
-    max-width: 480px !important;
+    max-width: 90vw !important;
     margin: 0 auto !important;
   }
   

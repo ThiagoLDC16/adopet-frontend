@@ -16,13 +16,21 @@ export interface Animal {
   age: number;
   description: string;
   status: AnimalStatus;
-  images: string[];
+  midia: Midia[];
   city: string;
   state: string;
   ongId: number;
   createdAt: string;
   updatedAt: string;
   ong: Ong;
+}
+
+export interface Midia {
+  id: number
+  type: string
+  extension: string
+  url: string
+  animalId: number
 }
 
 export interface AnimalListResponse {
