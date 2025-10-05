@@ -1,11 +1,13 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Dog, PawPrint, Settings } from 'lucide-react';
+import { BadgeAlert, Dog, PawPrint, Settings } from 'lucide-react';
 import { useAuth } from "@/features/auth/contexts/AuthContext";
 import { UserType } from "@/features/auth/types";
 
 export function DefaultLayout() {
     const location = useLocation();
     const { user } = useAuth();
+
+
 
     return (
         <div className="shell">
@@ -36,6 +38,15 @@ export function DefaultLayout() {
                         aria-label="Meus Animais"
                     >
                         <Dog />
+                    </Link>
+                )}
+                {user?.type === UserType.USER && (
+                    <Link
+                        to="/my-reports"
+                        className={`navBtn ${location.pathname === '/my-reports' ? 'active' : ''}`}
+                        aria-label="Minhas denúncias"
+                    >
+                        <BadgeAlert />
                     </Link>
                 )}
                 {user && (

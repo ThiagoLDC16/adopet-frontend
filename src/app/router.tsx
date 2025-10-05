@@ -8,6 +8,7 @@ import { UserType } from '@/features/auth/types';
 import { ListAnimalsPage } from '@/features/animals/pages/ListAnimalsPage';
 import { MyAnimalsPage } from '@/features/animals/pages/MyAnimalsPage';
 import { AnimalDetailsPage } from '@/features/animals/pages/AnimalDetailsPage';
+import { MyReportsPage } from '@/features/reports/pages/MyReportsPage';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,8 @@ const router = createBrowserRouter([
     element: <DefaultLayout />,
     children: [
       { path: "/animals", element: <ListAnimalsPage /> },
-      { path: "/animals/:id", element: <AnimalDetailsPage /> }
+      { path: "/animals/:id", element: <AnimalDetailsPage /> },
+
     ],
   },
   {
@@ -40,6 +42,17 @@ const router = createBrowserRouter([
         element: <DefaultLayout />,
         children: [
           { path: "/my-animals", element: <MyAnimalsPage /> },
+        ],
+      },
+    ]
+  },
+  {
+    element: <ProtectedRoute userType={UserType.USER} />,
+    children: [
+      {
+        element: <DefaultLayout />,
+        children: [
+          { path: "/my-reports", element: <MyReportsPage /> },
         ],
       },
     ]
