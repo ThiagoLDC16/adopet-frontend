@@ -7,6 +7,7 @@ import { ProtectedRoute } from '@/features/auth/components/ProtectedRoute';
 import { UserType } from '@/features/auth/types';
 import { ListAnimalsPage } from '@/features/animals/pages/ListAnimalsPage';
 import { MyAnimalsPage } from '@/features/animals/pages/MyAnimalsPage';
+import { AnimalDetailsPage } from '@/features/animals/pages/AnimalDetailsPage';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
     element: <DefaultLayout />,
     children: [
       { path: "/animals", element: <ListAnimalsPage /> },
+      { path: "/animals/:id", element: <AnimalDetailsPage /> }
     ],
   },
   {

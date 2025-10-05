@@ -2,6 +2,7 @@ import type { Animal } from '../types/animal.types';
 import { Link } from 'react-router-dom';
 import { EditAnimalDialogButton } from './EditAnimalDialogButton';
 import { DeleteButton } from './DeleteButton';
+import { getImageUrl } from '@/lib/getImageURL';
 
 interface AnimalCardProps {
   animal: Animal;
@@ -28,12 +29,14 @@ export function AnimalCard({ animal }: AnimalCardProps) {
     }
   };
 
+
+
   return (
     <article className="card">
       <Link to={`/animals/${animal.id}`}>
         {animal.midia && animal.midia.length > 0 ? (
           <img
-            src={animal.midia[0].url}
+            src={getImageUrl(animal.midia[0].url) || "/"}
             alt={animal.name || 'Animal'}
           />
         ) : (
@@ -45,7 +48,7 @@ export function AnimalCard({ animal }: AnimalCardProps) {
       <div className="meta">
         <b>{animal.name || 'Sem nome'}</b>
         <small>
-          {getSpeciesName(animal.species) || 'Espécie não informada'} 
+          {getSpeciesName(animal.species) || 'Espécie não informada'}
           {animal.breed && ` • ${animal.breed}`}
           {animal.age && ` • ${animal.age} anos`}
         </small>
@@ -56,8 +59,8 @@ export function AnimalCard({ animal }: AnimalCardProps) {
         </small> */}
       </div>
       <div className='flex justify-end gap-3'>
-          <EditAnimalDialogButton id={animal.id} />
-          <DeleteButton id={animal.id} name={animal.name} />
+        <EditAnimalDialogButton id={animal.id} />
+        <DeleteButton id={animal.id} name={animal.name} />
       </div>
     </article>
   );

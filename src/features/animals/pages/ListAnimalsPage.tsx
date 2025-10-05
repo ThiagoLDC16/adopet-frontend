@@ -8,15 +8,17 @@ export function ListAnimalsPage() {
   const { animals, loading, error, filters, updateFilters } = useAnimals();
   const [searchTerm, setSearchTerm] = useState('');
 
+  console.log(animals)
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     updateFilters({ ...filters, breed: searchTerm });
   };
 
-  const clearSearch = () => {
+  /* const clearSearch = () => {
     setSearchTerm('');
     updateFilters({ ...filters, breed: undefined });
-  };
+  }; */
 
   const getFilterChips = () => {
     const chips = [];
@@ -69,10 +71,10 @@ export function ListAnimalsPage() {
 
       {/* Search + actions */}
       <form className="searchRow" onSubmit={handleSearch}>
-        <input 
+        <input
           type="text"
-          className="input" 
-          placeholder="Pesquisar" 
+          className="input"
+          placeholder="Pesquisar"
           aria-label="Pesquisar animais"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -88,9 +90,9 @@ export function ListAnimalsPage() {
       {filterChips.length > 0 && (
         <div className="chips" aria-label="Filtros ativos">
           {filterChips.map((chip) => (
-            <span 
-              key={chip.key} 
-              className="chip" 
+            <span
+              key={chip.key}
+              className="chip"
               onClick={() => removeFilter(chip.key)}
               style={{ cursor: 'pointer' }}
             >
