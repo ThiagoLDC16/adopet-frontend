@@ -7,35 +7,43 @@ import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHead
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from '@/features/auth/contexts/AuthContext';
-import { z } from "zod"
-import { zodResolver } from '@hookform/resolvers/zod';
+import type { User } from '@/features/auth/types';
 
 
 
-const reportSchema = z.object({
-    description: z.string(),
-    details: z.string(),
-    ocurrenceDate: z.date(),
-    location: z.string(),
-    midia: z.array(z.instanceof(File))
-
-})
-
-type reportSchemaProps = z.infer<typeof reportSchema>
+type reportSchemaProps = {
+    description: string,
+    details: string,
+    ocurrenceDate: Date
+    location: string,
+    midia: FileList
+    user?: User
+}
 
 export function CreateReportDialog() {
-    const { register, handleSubmit, setValue } = useForm<reportSchemaProps>({
-        resolver: zodResolver(reportSchema)
-    })
+    const { register, handleSubmit, setValue } = useForm<reportSchemaProps>()
 
     const [display, setDisplay] = useState(false);
     const { user } = useAuth()
 
 
+
     async function handleCreateReport(data: reportSchemaProps) {
+        const formData = new FormData()
+        formData.append("description", data.description)
+        formData.append("details", data.details)
+        formData.append("ocurrenceDate", new Date(data.ocurrenceDate).toISOString())
+        formData.append("location", data.location)
+
+        for (let i = 0; i < data.midia.length; i++) {
+            formData.append("midia", data.midia[i])
+        }
+
+        if (user) formData.append("user", JSON.stringify(user))
 
         try {
-            api.post("/api/report", { ...data, user })
+            api.post("/api/report/register", formData)
+            console.log(formData)
             setDisplay(true)
         } catch (error) {
             console.log(error)
@@ -72,11 +80,7 @@ export function CreateReportDialog() {
 
                 <div className="pt-4 grid grid-cols-4">
                     <Label htmlFor="midia">Fotos/vídeos</Label>
-                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => {
-
-                        const filesArray = e.target.files ? Array.from(e.target.files) : [];
-                        setValue("midia", [...filesArray]);
-                    }} />
+                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
                 </div>
 
                 {display && <p className='text-right text-xl my-3 text-green-500'>Denúncia registrada!</p>}
