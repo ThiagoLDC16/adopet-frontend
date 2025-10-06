@@ -6,7 +6,7 @@ export function CreateAnimalDialogButton() {
     return(
         <Dialog>
             <DialogTrigger asChild>
-                <Button>
+                <Button variant={"outline"}>
                     Novo animal
                 </Button>
             </DialogTrigger>

@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useAnimals } from '../hooks/useAnimals';
+import { useMyAnimals } from '../hooks/useMyAnimals';
 import { AnimalCard } from '../components/AnimalCard';
 import { AnimalFilters } from '../components/AnimalFilters';
 import type { AnimalFilters as IAnimalFilters } from '../types/animal.types';
+import { CreateAnimalDialogButton } from '../components/CreateAnimalDialogButton';
 
-export function ListAnimalsPage() {
-  const { animals, loading, error, filters, updateFilters } = useAnimals();
+export function MyAnimalsPage() {
+  const { animals, loading, error, filters, updateFilters } = useMyAnimals();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
@@ -48,7 +49,7 @@ export function ListAnimalsPage() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-96">
-        <div className="text-lg">Carregando animais...</div>
+        <div className="text-lg">Carregando meus animais...</div>
       </div>
     );
   }
@@ -65,7 +66,7 @@ export function ListAnimalsPage() {
 
   return (
     <div className="page-content">
-      <h1>Animais</h1>
+      <h1>Meus Animais</h1>
 
       {/* Search + actions */}
       <form className="searchRow" onSubmit={handleSearch}>
@@ -73,7 +74,7 @@ export function ListAnimalsPage() {
           type="text"
           className="input" 
           placeholder="Pesquisar" 
-          aria-label="Pesquisar animais"
+          aria-label="Pesquisar meus animais"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -100,13 +101,14 @@ export function ListAnimalsPage() {
         </div>
       )}
 
-      <div className="sectionLabel">Pets disponíveis na região</div>
+      <div className="sectionLabel">Meus pets cadastrados</div>
+      <CreateAnimalDialogButton />
 
       {/* List */}
-      <section className="list" aria-label="Lista de animais">
+      <section className="list mt-3" aria-label="Lista de meus animais">
         {animals?.animals.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">Nenhum animal encontrado</p>
+            <p className="text-gray-500 text-lg">Você ainda não cadastrou nenhum animal</p>
           </div>
         ) : (
           animals?.animals.map((animal) => (

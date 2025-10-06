@@ -1,8 +1,9 @@
 import { api } from '@/lib/api';
 import { createContext, useContext, useState, useEffect } from 'react';
+import type { User } from '../types';
 
 interface AuthContextType {
-  user: any;
+  user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (token: string) => void;
