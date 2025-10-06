@@ -21,8 +21,8 @@ const registerSchema = z
         confirmPassword: z.string(),
         phone: z.string().optional(),
         type: z.enum(UserType),
-        cpf: z.string().optional(),
-        cnpj: z.string().optional(),
+        cpf: z.string().optional().nullable(),
+        cnpj: z.string().optional().nullable(),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "As senhas não coincidem",
@@ -31,6 +31,7 @@ const registerSchema = z
     .refine(
         (data) => {
             if (data.type === UserType.USER) {
+                data.cnpj = null
                 return data.cpf && data.cpf.length > 0;
             }
             return true;
@@ -43,6 +44,7 @@ const registerSchema = z
     .refine(
         (data) => {
             if (data.type === UserType.ONG) {
+                data.cpf = null
                 return data.cnpj && data.cnpj.length > 0;
             }
             return true;
