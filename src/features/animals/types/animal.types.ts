@@ -8,6 +8,12 @@ export interface Ong {
   email: string;
 }
 
+export interface Characteristic {
+  characteristic: {
+    description: string
+  }
+}
+
 export interface Animal {
   id: number;
   name: string;
@@ -16,13 +22,11 @@ export interface Animal {
   age: number;
   description: string;
   status: AnimalStatus;
+  characteristics: Characteristic[]
   midia: Midia[];
-  city: string;
-  state: string;
-  ongId: number;
   createdAt: string;
   updatedAt: string;
-  ong: Ong;
+  responsibleNGO: Ong;
 }
 
 export interface Midia {

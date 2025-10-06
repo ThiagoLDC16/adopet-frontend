@@ -9,7 +9,13 @@ export const animalService = {
 
   async getAnimalById(id: number): Promise<Animal> {
     const response = await api.get(`/api/animal/${id}`);
+
     return response.data;
+  },
+  async getAnimalByIdFixed(id: number): Promise<Animal> {
+    const response = await api.get(`/api/animal/${id}`);
+
+    return response.data.animal.animal;
   },
 
   async createAnimal(data: CreateAnimalData): Promise<Animal> {
