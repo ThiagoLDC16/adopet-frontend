@@ -70,7 +70,7 @@ export function EditAnimalDialog({ id }: { id: number }) {
         }
 
         api.put(
-            `/api/animal/id/${id}`,
+            `/api/animal/${id}`,
             formData
         )
             .then(response => {

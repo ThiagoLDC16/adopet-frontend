@@ -8,8 +8,6 @@ export function ListAnimalsPage() {
   const { animals, loading, error, filters, updateFilters } = useAnimals();
   const [searchTerm, setSearchTerm] = useState('');
 
-  console.log(animals)
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     updateFilters({ ...filters, breed: searchTerm });

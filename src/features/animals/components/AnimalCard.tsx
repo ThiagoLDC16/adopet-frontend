@@ -29,7 +29,7 @@ export function AnimalCard({ animal }: AnimalCardProps) {
     }
   };
 
-
+  // console.log(animal.id);
 
   return (
     <article className="card">
