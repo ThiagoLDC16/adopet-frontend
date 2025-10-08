@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     element: <PublicRoute />,
     children: [
       {
-        element: <DefaultLayout />,
+        // element: <DefaultLayout />,
         children: [
           { path: "/login", element: <LoginPage /> },
           { path: "/register", element: <RegisterPage /> },
