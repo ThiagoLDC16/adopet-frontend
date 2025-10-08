@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label";
 
 export function CreateAnimalDialog() {
     const { register, handleSubmit, setValue } = useForm<CreateAnimalSchema>()
-    const [ display, setDisplay ] = useState(false);
+    const [display, setDisplay] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     type CreateAnimalSchema = {
         name: string,
@@ -33,18 +34,19 @@ export function CreateAnimalDialog() {
         for (let i = 0; i < data.midia.length; i++) {
             formData.append("midia", data.midia[i])
         }
-
+        setLoading(true)
         api.post(
             "/api/animal/register",
             formData
         )
-        .then(response => {
-            console.log("Animal cadastrado " + response);
-            setDisplay(true);
-        })
-        .catch(e => {
-            console.log(e);
-        })
+            .then(response => {
+                console.log("Animal cadastrado " + response);
+                setLoading(false)
+                setDisplay(true);
+            })
+            .catch(e => {
+                console.log(e);
+            })
 
     }
 
@@ -88,9 +90,9 @@ export function CreateAnimalDialog() {
 
                 <div className="pt-4 grid grid-cols-4">
                     <Label htmlFor="midia">Fotos/vídeos</Label>
-                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })}/>
+                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
                 </div>
-
+                {loading && <p className='text-right text-xl my-3 text-blue-500'>Carregando...</p>}
                 {display && <p className='text-right text-xl my-3 text-green-500'>Animal cadastrado!</p>}
 
                 <DialogFooter className="flex-row justify-end mt-4">

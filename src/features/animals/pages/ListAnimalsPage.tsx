@@ -110,7 +110,7 @@ export function ListAnimalsPage() {
           </div>
         ) : (
           animals?.animals.map((animal) => (
-            <AnimalCard key={animal.id} animal={animal} />
+            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={false} />
           ))
         )}
       </section>

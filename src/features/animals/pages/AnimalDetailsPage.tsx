@@ -25,7 +25,13 @@ export function AnimalDetailsPage() {
         }
     };
 
-    console.log(animal)
+    const findPhotoOrNull = () => {
+        const photo = animal?.midia.find(item => item.type === "image")
+        if (!photo) return null
+        return photo
+    }
+
+
     return (
         <div className="page-content">
             <h1>Animais</h1>
@@ -60,14 +66,14 @@ export function AnimalDetailsPage() {
                             </SheetHeader>
                             <div className='px-4'>
                                 <div className="flex items-start justify-center gap-2 mb-4">
-                                    <div className='flex-1 overflow-hidden rounded-md max-h-[120px]'>
-                                        {animal?.midia[0] && animal.midia.length > 0 ? (
+                                    <div className='flex-1 overflow-hidden rounded-md max-h-[120px] h-[120px]'>
+                                        {findPhotoOrNull() ? (
                                             <img
-                                                src={getImageUrl(animal.midia[0].url) ?? "/"}
-                                                alt={animal.name ?? 'Animal'}
+                                                src={getImageUrl(findPhotoOrNull()?.url) ?? "/"}
+                                                alt={animal?.name ?? 'Animal'}
                                             />) :
                                             (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-300">
+                                                <div className="w-full h-full flex items-center justify-center text-gray-400 border-gray-400 border-[1px] rounded-md">
                                                     Sem foto
                                                 </div>
                                             )}

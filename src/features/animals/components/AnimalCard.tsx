@@ -6,9 +6,10 @@ import { getImageUrl } from '@/lib/getImageURL';
 
 interface AnimalCardProps {
   animal: Animal;
+  isMyAnimalsPage: boolean
 }
 
-export function AnimalCard({ animal }: AnimalCardProps) {
+export function AnimalCard({ animal, isMyAnimalsPage }: AnimalCardProps) {
   const getSpeciesName = (species: string) => {
     switch (species) {
       case 'DOG': return 'Cachorro';
@@ -20,7 +21,7 @@ export function AnimalCard({ animal }: AnimalCardProps) {
     }
   };
 
-  const getStatusText = (status: string) => {
+  /* const getStatusText = (status: string) => {
     switch (status) {
       case 'DISPONIVEL': return 'Disponível';
       case 'ADOTADO': return 'Adotado';
@@ -28,15 +29,22 @@ export function AnimalCard({ animal }: AnimalCardProps) {
       default: return status;
     }
   };
-
+ */
   // console.log(animal.id);
+
+  const findPhotoOrNull = () => {
+    const photo = animal?.midia.find(item => item.type === "image")
+    if (!photo) return null
+    return photo
+  }
+
 
   return (
     <article className="card">
       <Link to={`/animals/${animal.id}`}>
-        {animal.midia && animal.midia.length > 0 ? (
+        {findPhotoOrNull() ? (
           <img
-            src={getImageUrl(animal.midia[0].url) || "/"}
+            src={getImageUrl(findPhotoOrNull()?.url) ?? "/"}
             alt={animal.name || 'Animal'}
           />
         ) : (
@@ -58,10 +66,11 @@ export function AnimalCard({ animal }: AnimalCardProps) {
           {animal.status && ` • ${getStatusText(animal.status)}`}
         </small> */}
       </div>
-      <div className='flex justify-end gap-3'>
+      {isMyAnimalsPage && <div className='flex justify-end gap-3'>
         <EditAnimalDialogButton id={animal.id} />
         <DeleteButton id={animal.id} name={animal.name} />
-      </div>
+      </div>}
+
     </article>
   );
 }

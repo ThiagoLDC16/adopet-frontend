@@ -14,10 +14,10 @@ export function MyAnimalsPage() {
     updateFilters({ ...filters, breed: searchTerm });
   };
 
-  const clearSearch = () => {
-    setSearchTerm('');
-    updateFilters({ ...filters, breed: undefined });
-  };
+  /*  const clearSearch = () => {
+     setSearchTerm('');
+     updateFilters({ ...filters, breed: undefined });
+   }; */
 
   const getFilterChips = () => {
     const chips = [];
@@ -70,10 +70,10 @@ export function MyAnimalsPage() {
 
       {/* Search + actions */}
       <form className="searchRow" onSubmit={handleSearch}>
-        <input 
+        <input
           type="text"
-          className="input" 
-          placeholder="Pesquisar" 
+          className="input"
+          placeholder="Pesquisar"
           aria-label="Pesquisar meus animais"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -89,9 +89,9 @@ export function MyAnimalsPage() {
       {filterChips.length > 0 && (
         <div className="chips" aria-label="Filtros ativos">
           {filterChips.map((chip) => (
-            <span 
-              key={chip.key} 
-              className="chip" 
+            <span
+              key={chip.key}
+              className="chip"
               onClick={() => removeFilter(chip.key)}
               style={{ cursor: 'pointer' }}
             >
@@ -112,7 +112,7 @@ export function MyAnimalsPage() {
           </div>
         ) : (
           animals?.animals.map((animal) => (
-            <AnimalCard key={animal.id} animal={animal} />
+            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={true} />
           ))
         )}
       </section>
