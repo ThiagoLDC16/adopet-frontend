@@ -7,10 +7,13 @@ import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHead
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useData } from '../hooks/useData';
+import { useNavigate } from 'react-router-dom';
 
 export function EditAnimalDialog({ id }: { id: number }) {
     const animalData = useData(`/api/animal/${id}`);
     const [ newFiles, setNewFiles ] = useState<File[]>([])
+    const navigate = useNavigate()
+    const [display, setDisplay] = useState(false);
 
     const { register, handleSubmit, setValue, reset } = useForm<EditAnimalSchema>({
         defaultValues: {
@@ -23,9 +26,9 @@ export function EditAnimalDialog({ id }: { id: number }) {
         }
     })
 
-    const [display, setDisplay] = useState(false);
-
     const char: Array<string> = useMemo(() => (animalData?.characteristics || []).map(c => c.characteristic.description) ?? [], [animalData]);
+
+    console.log(animalData);
 
     useEffect(() => {
         if (animalData) {
@@ -35,7 +38,8 @@ export function EditAnimalDialog({ id }: { id: number }) {
                 species: animalData.species ?? "",
                 breed: animalData.breed ?? "",
                 description: animalData.description ?? "",
-                characteristics: char.join(', ')
+                characteristics: char.join(', '),
+                adopterEmail: animalData.adopterUser?.email
             })
         }
     }, [animalData, reset, char]);
@@ -76,6 +80,7 @@ export function EditAnimalDialog({ id }: { id: number }) {
             .then(response => {
                 console.log("Animal editado " + response);
                 setDisplay(true);
+                navigate('/animals/' + id)
             })
             .catch(e => {
                 console.log(e);

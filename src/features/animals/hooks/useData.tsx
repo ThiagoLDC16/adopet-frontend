@@ -10,6 +10,13 @@ type Char = {
     }
 }
 
+type AdopterUser = {
+    email: string,
+    id: number,
+    name: string,
+    phone: string
+}
+
 type Midia = {
     animalId: number,
     extension: string,
@@ -27,7 +34,7 @@ type AnimalData = {
         name: string,
         responsibleNGOId: number,
         species: string,
-        adopterUserId?: number,
+        adopterUser?: AdopterUser,
         characteristics: Array<Char>
         midia: Array<Midia>
     }
