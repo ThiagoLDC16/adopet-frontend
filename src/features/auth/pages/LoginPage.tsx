@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { api } from '@/lib/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -21,6 +22,7 @@ export function LoginPage() {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const {
     register,
@@ -38,8 +40,7 @@ export function LoginPage() {
       const response = await api.post('/api/auth/login', data);
 
       const { token } = await response.data;
-      localStorage.setItem('token', token);
-      navigate('/');
+      await login(token);
     } catch (err: any) {
       if (err.response?.data?.code === 'EMAIL_ALREADY_REGISTERED') {
         setError('Esse e-mail já foi utilizado em outro cadastro.');
