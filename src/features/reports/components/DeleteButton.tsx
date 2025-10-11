@@ -14,19 +14,15 @@ import { Trash } from "lucide-react"
 import { useState } from "react"
 
 
-interface animalProps {
-    id: number,
-    name: string
-}
 
-export const DeleteButton = ({ id, name }: animalProps) => {
+export const DeleteButton = ({ id }: { id: number }) => {
     const [open, setOpen] = useState(false)
 
 
     const handleSubmit = async () => {
 
         try {
-            await api.delete(`/api/animal/${id}`)
+            await api.delete(`/api/report/${id}`)
             setOpen(false)
         } catch (error) {
             console.error(error)
@@ -42,9 +38,9 @@ export const DeleteButton = ({ id, name }: animalProps) => {
         <DialogContent className="sm:max-w-[425px]">
 
             <DialogHeader>
-                <DialogTitle>Excluir pet</DialogTitle>
+                <DialogTitle>Excluir denúncia</DialogTitle>
                 <DialogDescription>
-                    Tem certeza que deseja excluir <span className="font-bold">{name}</span>?
+                    Tem certeza que deseja excluir a <span className="font-bold">Denúncia {id}</span>?
                 </DialogDescription>
             </DialogHeader>
 
