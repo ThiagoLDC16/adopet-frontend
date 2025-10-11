@@ -41,6 +41,7 @@ export function LoginPage() {
 
       const { token } = await response.data;
       await login(token);
+      navigate('/');
     } catch (err: any) {
       if (err.response?.data?.code === 'EMAIL_ALREADY_REGISTERED') {
         setError('Esse e-mail já foi utilizado em outro cadastro.');

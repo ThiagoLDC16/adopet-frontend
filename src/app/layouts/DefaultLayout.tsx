@@ -1,20 +1,42 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { BadgeAlert, Dog, PawPrint, Settings } from 'lucide-react';
 import { useAuth } from "@/features/auth/contexts/AuthContext";
 import { UserType } from "@/features/auth/types";
+import { Button } from "@/components/ui/button";
 
 export function DefaultLayout() {
     const location = useLocation();
-    const { user } = useAuth();
+    const navigate = useNavigate();
+    const { user, logout: _logout } = useAuth();
 
-
+    const logout = () => {
+        _logout();
+        navigate('/login');
+    }
 
     return (
         <div className="shell">
             {/* Topbar */}
             <div className="topbar">
-                {/* <small>Conta/Configurações</small>
-                <span className="icon">⚙️</span> */}
+                <div className="flex w-full gap-3 justify-between">
+                    <b className="py-2">Adopet</b>
+
+                    <div className="flex gap-3">
+                        {user
+                            ? <>
+                                <Button onClick={logout}>
+                                    Sair
+                                </Button>
+                            </>
+                            : <>
+                                <Link to="/login">
+                                    <Button>
+                                        Login
+                                    </Button>
+                                </Link>
+                            </>}
+                    </div>
+                </div>
             </div>
 
             {/* Page Content */}
