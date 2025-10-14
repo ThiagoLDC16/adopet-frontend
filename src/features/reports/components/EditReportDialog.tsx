@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useState } from 'react'
 import { api } from '@/lib/api';
 
@@ -8,41 +8,58 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from '@/features/auth/contexts/AuthContext';
 import type { User } from '@/features/auth/types';
+import type { Report } from '../types/report.types';
 
 
 
 type reportSchemaProps = {
     description: string,
     details: string,
-    ocurrenceDate: Date
+    ocurrenceDate: string
     location: string,
     midia: FileList
     user?: User
 }
 
-export function CreateReportDialog() {
-    const { register, handleSubmit, setValue } = useForm<reportSchemaProps>()
+export function EditReportDialog({ report }: { report: Report }) {
+
+
+
+    const { register, control, handleSubmit, setValue } = useForm<reportSchemaProps>({
+        defaultValues: {
+            description: report.description,
+            details: report.details,
+            ocurrenceDate: new Date(report.ocurrenceDate).toISOString().split("T")[0],
+            location: report.location,
+
+        }
+    })
     const [loading, setLoading] = useState(false)
     const [display, setDisplay] = useState(false);
     const { user } = useAuth()
 
 
 
-    async function handleCreateReport(data: reportSchemaProps) {
+
+
+    async function handleEditReport(data: reportSchemaProps) {
         const formData = new FormData()
         formData.append("description", data.description)
         formData.append("details", data.details)
         formData.append("ocurrenceDate", new Date(data.ocurrenceDate).toISOString())
         formData.append("location", data.location)
         setLoading(true)
-        for (let i = 0; i < data.midia.length; i++) {
-            formData.append("midia", data.midia[i])
+        if (data.midia) {
+            for (let i = 0; i < data.midia.length; i++) {
+                formData.append("midia", data.midia[i])
+            }
         }
+
 
         if (user) formData.append("user", JSON.stringify(user))
 
         try {
-            await api.post("/api/report/register", formData)
+            await api.put(`/api/report/${report.id}`, formData)
             setLoading(false)
             setDisplay(true);
         } catch (error) {
@@ -53,11 +70,11 @@ export function CreateReportDialog() {
     return (
         <DialogContent>
             <DialogHeader className="text-left">
-                <DialogTitle>Nova denúncia</DialogTitle>
-                <DialogDescription>Registre uma nova denúncia</DialogDescription>
+                <DialogTitle>Editar denúncia {report.id}</DialogTitle>
+                <DialogDescription>Editar denúncia</DialogDescription>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit(handleCreateReport)} className="space y-6">
+            <form onSubmit={handleSubmit(handleEditReport)} className="space y-6">
                 <div className="grid grid-cols-4">
                     <Label htmlFor="descriptioon">Descrição</Label>
                     <Input className="col-span-3" {...register('description')} id='description' placeholder='Descreve o acontecimento' />
@@ -70,7 +87,21 @@ export function CreateReportDialog() {
 
                 <div className="pt-4 grid grid-cols-4">
                     <Label htmlFor="ocurrenceDate">Data de ocorrência</Label>
-                    <input className="col-span-3" type="date" id="ocurrenceDate" {...register("ocurrenceDate", { valueAsDate: true })} />
+                    <Controller
+                        name="ocurrenceDate"
+                        control={control}
+                        defaultValue={new Date(report.ocurrenceDate).toISOString().split("T")[0]}
+                        render={({ field }) => (
+                            <input
+                                type="date"
+                                id="occurrenceDate"
+                                className="col-span-3"
+                                value={field.value ?? ""}
+                                onChange={field.onChange}
+                            />
+                        )}
+                    />
+
                 </div>
 
                 <div className="pt-4 grid grid-cols-4">
@@ -82,8 +113,19 @@ export function CreateReportDialog() {
                     <Label htmlFor="midia">Fotos/vídeos</Label>
                     <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
                 </div>
+
+                <div>
+                    {!display && <h3 className='text-sm'>Imagens atuais</h3>}
+                    {!display && report?.midia && report?.midia.map(item => item.type === "image" ?
+
+                        <img key={item.id} src={`${import.meta.env.VITE_API_URL}${item.url}`} className='h-18 object-cover rounded col-span-1' /> :
+                        <video key={item.id} src={`${import.meta.env.VITE_API_URL}${item.url}`} className='h-18 object-cover rounded col-span-1' ></video>
+                    )}
+
+                </div>
+
                 {loading && <p className='text-right text-xl my-3 text-blue-500'>Carregando...</p>}
-                {display && <p className='text-right text-xl my-3 text-green-500'>Denúncia registrada!</p>}
+                {display && <p className='text-right text-xl my-3 text-green-500'>Denúncia atualizada!</p>}
 
                 <DialogFooter className="flex-row justify-end mt-4">
                     <DialogClose asChild>

@@ -1,25 +1,26 @@
 import { CreateReportDialogButton } from '../components/CreateReportDialogButton';
+import { ReportCard } from '../components/ReportCard';
+import { useMyReports } from '../hooks/useMyReports';
 
 export function MyReportsPage() {
-  /*  const { animals, loading, error, filters, updateFilters } = useMyAnimals(); */
+  const { reports, loading, error } = useMyReports()
 
 
-
-  /* if (loading) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center min-h-96">
-        <div className="text-lg">Carregando meus animais...</div>
+        <div className="text-lg">Carregando minhas denúncias...</div>
       </div>
     );
   }
- 
+
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-96">
         <div className="text-red-600">Erro: {error}</div>
       </div>
     );
-  } */
+  }
 
 
   return (
@@ -46,9 +47,13 @@ export function MyReportsPage() {
 
       {/* List */}
       <section className="list mt-3" aria-label="Lista das minhas denúncias">
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Você ainda não registrou nenhuma denúncia</p>
-        </div>
+        {reports && reports.length > 0 ? reports.map(item => <ReportCard key={item.id} {...item} />)
+          : <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">Você ainda não registrou nenhuma denúncia</p>
+          </div>
+        }
+
+
 
       </section>
     </div>
