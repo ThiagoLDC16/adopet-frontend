@@ -7,10 +7,11 @@ import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHead
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function CreateAnimalDialog({setIsOpen, fetchMyAnimals}: {setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchMyAnimals: () => Promise<void>}) {
+export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchMyAnimals: () => Promise<void> }) {
     const { register, handleSubmit, setValue } = useForm<CreateAnimalSchema>()
     const [display, setDisplay] = useState(false);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [hasImage, setHasImage] = useState(true);
 
     type CreateAnimalSchema = {
         name: string,
@@ -31,11 +32,17 @@ export function CreateAnimalDialog({setIsOpen, fetchMyAnimals}: {setIsOpen: Reac
         formData.append("description", data.description)
         formData.append("characteristics", data.characteristics)
 
-        for (let i = 0; i < data.midia.length; i++) {
-            formData.append("midia", data.midia[i])
+        if (data.midia) {
+            for (let i = 0; i < data.midia.length; i++) {
+                formData.append("midia", data.midia[i])
+            }
+            setHasImage(true);
+        } else {
+            setHasImage(false);
         }
-        setLoading(true)
-        api.post(
+        if (data.midia) {
+            setLoading(true)
+            api.post(
             "/api/animal/register",
             formData
         )
@@ -49,7 +56,7 @@ export function CreateAnimalDialog({setIsOpen, fetchMyAnimals}: {setIsOpen: Reac
             .catch(e => {
                 console.log(e);
             })
-
+        }
     }
 
     return (
@@ -94,15 +101,15 @@ export function CreateAnimalDialog({setIsOpen, fetchMyAnimals}: {setIsOpen: Reac
                     <Label htmlFor="midia">Fotos/vídeos</Label>
                     <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
                 </div>
+                {!hasImage && <p className='text-right text-l mt-1 text-red-600'>Precisa de pelo menos uma mídia</p>}
                 {loading && <p className='text-right text-xl my-3 text-blue-500'>Carregando...</p>}
-                {display && <p className='text-right text-xl my-3 text-green-500'>Animal cadastrado!</p>}
 
                 <DialogFooter className="flex-row justify-end mt-4">
                     <DialogClose>
                         <Button type="button" variant="destructive" className="px-6">Cancelar</Button>
                     </DialogClose>
                     <Button type="submit" variant="default" className="px-8">Salvar</Button>
-                    
+
                 </DialogFooter>
             </form>
         </DialogContent>

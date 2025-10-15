@@ -20,10 +20,12 @@ type reportSchemaProps = {
     user?: User
 }
 
-export function CreateReportDialog({setIsOpen, fetchReports}: {setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchReports: () => Promise<void>}) {
+export function CreateReportDialog({ setIsOpen, fetchReports }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchReports: () => Promise<void> }) {
     const { register, handleSubmit, setValue } = useForm<reportSchemaProps>()
     const [loading, setLoading] = useState(false)
     const [display, setDisplay] = useState(false);
+    const [hasImage, setHasImage] = useState(true);
+    const [hasLoc, setHasLoc] = useState(true);
     const { user } = useAuth()
 
 
@@ -33,22 +35,35 @@ export function CreateReportDialog({setIsOpen, fetchReports}: {setIsOpen: React.
         formData.append("description", data.description)
         formData.append("details", data.details)
         formData.append("ocurrenceDate", new Date(data.ocurrenceDate).toISOString())
-        formData.append("location", data.location)
-        setLoading(true)
-        for (let i = 0; i < data.midia.length; i++) {
-            formData.append("midia", data.midia[i])
+        if (data.location) {
+            formData.append("location", data.location)
+            setHasLoc(true);
+        } else {
+            setHasLoc(false);
+        }
+
+        if (data.midia) {
+            for (let i = 0; i < data.midia.length; i++) {
+                formData.append("midia", data.midia[i])
+            }
+            setHasImage(true);
+        } else {
+            setHasImage(false);
         }
 
         if (user) formData.append("user", JSON.stringify(user))
 
-        try {
-            await api.post("/api/report/register", formData)
-            setLoading(false)
-            setDisplay(true);
-            setIsOpen(false);
-            await fetchReports();
-        } catch (error) {
-            console.log(error)
+        if (data.midia && data.location) {
+            try {
+                setLoading(true)
+                await api.post("/api/report/register", formData)
+                setLoading(false)
+                setDisplay(true);
+                setIsOpen(false);
+                await fetchReports();
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
@@ -79,11 +94,13 @@ export function CreateReportDialog({setIsOpen, fetchReports}: {setIsOpen: React.
                     <Label htmlFor="location">Localização</Label>
                     <Input className="col-span-3" id="location" {...register('location')} />
                 </div>
+                {!hasLoc && <p className='text-right text-l mt-1 text-red-600'>Localização é obrigatória</p>}
 
                 <div className="pt-4 grid grid-cols-4">
                     <Label htmlFor="midia">Fotos/vídeos</Label>
                     <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
                 </div>
+                {!hasImage && <p className='text-right text-l mt-1 text-red-600'>Precisa de pelo menos uma mídia</p>}
                 {loading && <p className='text-right text-xl my-3 text-blue-500'>Carregando...</p>}
 
                 <DialogFooter className="flex-row justify-end mt-4">

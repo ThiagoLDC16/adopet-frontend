@@ -27,8 +27,6 @@ export function EditAnimalDialog({ id, setIsOpen, fetchMyAnimals }: { id: number
 
     const char: Array<string> = useMemo(() => (animalData?.characteristics || []).map(c => c.characteristic.description) ?? [], [animalData]);
 
-    console.log(animalData);
-
     useEffect(() => {
         if (animalData) {
             reset({

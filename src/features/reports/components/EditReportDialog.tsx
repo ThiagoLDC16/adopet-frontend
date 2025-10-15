@@ -36,6 +36,8 @@ export function EditReportDialog({ report, setIsOpen, fetchReports }: { report: 
     })
     const [loading, setLoading] = useState(false)
     const [display, setDisplay] = useState(false);
+    const [hasImage, setHasImage] = useState(true);
+    const [hasLoc, setHasLoc] = useState(true);
     const { user } = useAuth()
 
 
@@ -47,25 +49,37 @@ export function EditReportDialog({ report, setIsOpen, fetchReports }: { report: 
         formData.append("description", data.description)
         formData.append("details", data.details)
         formData.append("ocurrenceDate", new Date(data.ocurrenceDate).toISOString())
-        formData.append("location", data.location)
-        setLoading(true)
+
+        if (data.location) {
+            formData.append("location", data.location)
+            setHasLoc(true);
+        } else {
+            setHasLoc(false);
+        }
+
         if (data.midia) {
             for (let i = 0; i < data.midia.length; i++) {
                 formData.append("midia", data.midia[i])
             }
+            setHasImage(true);
+        } else {
+            setHasImage(false);
         }
 
 
         if (user) formData.append("user", JSON.stringify(user))
 
-        try {
-            await api.put(`/api/report/${report.id}`, formData)
-            setLoading(false)
-            setDisplay(true);
-            setIsOpen(false);
-            await fetchReports();
-        } catch (error) {
-            console.log(error)
+        if (data.location) {
+            try {
+                setLoading(true);
+                await api.put(`/api/report/${report.id}`, formData)
+                setLoading(false)
+                setDisplay(true);
+                setIsOpen(false);
+                await fetchReports();
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
@@ -110,6 +124,7 @@ export function EditReportDialog({ report, setIsOpen, fetchReports }: { report: 
                     <Label htmlFor="location">Localização</Label>
                     <Input className="col-span-3" id="location" {...register('location')} />
                 </div>
+                {!hasLoc && <p className='text-right text-l mt-1 text-red-600'>Localização é obrigatória</p>}
 
                 <div className="pt-4 grid grid-cols-4">
                     <Label htmlFor="midia">Fotos/vídeos</Label>
