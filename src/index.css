@@ -375,10 +375,6 @@ details.filter[open] .menu {
   bottom: 0;
   background: var(--background);
   border-top: 1px solid rgba(0, 0, 0, 0.12);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 8px 16px;
 }
 
 .navBtn {

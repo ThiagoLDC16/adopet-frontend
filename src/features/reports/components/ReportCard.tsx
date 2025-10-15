@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { ReportStatus, type Report } from "../types/report.types"
 import { EditReportDialogButton } from "./EditReportDialogButton";
 import { DeleteButton } from "./DeleteButton";
+import { useAuth } from "@/features/auth/contexts/AuthContext";
+import { UserType } from "@/features/auth/types";
+import { SendReportToReviewDialogButton } from "./SendReportToReviewDialogButton";
 
 
-
-
-export const ReportCard = (report: Report) => {
+export const ReportCard = ({ report, fetchReports }: { report: Report, fetchReports?: () => Promise<void> }) => {
+    const { user } = useAuth();
 
     const [count, setCount] = useState<number>(0)
     const [statusMessage, setStatusMessage] = useState<string>("")
@@ -16,9 +18,9 @@ export const ReportCard = (report: Report) => {
                 case ReportStatus.PENDING:
                     setStatusMessage("Pendente");
                     break
-                case ReportStatus.VALIDATED:
+                case ReportStatus.UNDER_REVIEW:
                     setCount(1)
-                    setStatusMessage("Validado");
+                    setStatusMessage("Em Triagem");
                     break
                 case ReportStatus.REJECTED:
                     setStatusMessage("Rejeitado");
@@ -32,7 +34,7 @@ export const ReportCard = (report: Report) => {
                     setStatusMessage("Resolvido");
                     break
                 default:
-                    setStatusMessage("Desconhido");
+                    setStatusMessage("Desconhecido");
             }
         }
         statusMessage()
@@ -51,10 +53,17 @@ export const ReportCard = (report: Report) => {
 
             {count < 1 &&
                 <div className="flex gap-2">
-                    <EditReportDialogButton report={report} />
-                    <DeleteButton id={report.id} />
+                    {
+                        user?.type == UserType.USER
+                            ? <>
+                                <EditReportDialogButton report={report} />
+                                <DeleteButton id={report.id} />
+                            </>
+                            : <>
+                                {report.status === ReportStatus.PENDING && <SendReportToReviewDialogButton id={report.id} fetchReports={fetchReports} />}
+                            </>
+                    }
                 </div>
-
             }
         </div>
 

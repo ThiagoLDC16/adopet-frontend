@@ -1,10 +1,12 @@
+import { useAuth } from '@/features/auth/contexts/AuthContext';
 import { CreateReportDialogButton } from '../components/CreateReportDialogButton';
 import { ReportCard } from '../components/ReportCard';
 import { useMyReports } from '../hooks/useMyReports';
+import { UserType } from '@/features/auth/types';
 
 export function MyReportsPage() {
-  const { reports, loading, error } = useMyReports()
-
+  const { reports, loading, error, refetch } = useMyReports()
+  const { user } = useAuth();
 
   if (loading) {
     return (
@@ -43,18 +45,17 @@ export function MyReportsPage() {
 
 
       <div className="sectionLabel">Minhas denúncias registradas</div>
-      <CreateReportDialogButton />
+      {user?.type == UserType.USER && <CreateReportDialogButton />}
 
       {/* List */}
       <section className="list mt-3" aria-label="Lista das minhas denúncias">
-        {reports && reports.length > 0 ? reports.map(item => <ReportCard key={item.id} {...item} />)
+        {reports && reports.length > 0 ? reports.map(item => <ReportCard key={item.id} report={item} fetchReports={refetch} />)
           : <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">Você ainda não registrou nenhuma denúncia</p>
+            <p className="text-gray-500 text-lg">
+              {user?.type == UserType.ONG ? 'Você ainda não assumiu nenhuma denúncia' : 'Você ainda não registrou nenhuma denúncia'}
+            </p>
           </div>
         }
-
-
-
       </section>
     </div>
   );

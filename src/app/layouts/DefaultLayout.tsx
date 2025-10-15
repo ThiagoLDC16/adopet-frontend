@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
-import { BadgeAlert, Dog, PawPrint, Settings } from 'lucide-react';
+import { BadgeAlert, ClipboardList, Dog, PawPrint } from 'lucide-react';
 import { useAuth } from "@/features/auth/contexts/AuthContext";
 import { UserType } from "@/features/auth/types";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,7 @@ export function DefaultLayout() {
             </main>
 
             {/* Bottom Navigation */}
-            <nav className="bottom" aria-label="Navegação principal">
+            <nav className={`grid gap-2.5 py-2 px-4 ${user?.type == UserType.ONG ? 'grid-cols-4' : 'grid-cols-3'}`} aria-label="Navegação principal">
                 <Link
                     to="/animals"
                     className={`navBtn ${location.pathname === '/animals' ? 'active' : ''}`}
@@ -62,22 +62,22 @@ export function DefaultLayout() {
                         <Dog />
                     </Link>
                 )}
-                {user?.type === UserType.USER && (
+                {user?.type && (
                     <Link
                         to="/my-reports"
                         className={`navBtn ${location.pathname === '/my-reports' ? 'active' : ''}`}
                         aria-label="Minhas denúncias"
                     >
-                        <BadgeAlert />
+                        {user.type === UserType.USER ? <BadgeAlert /> : <ClipboardList />}
                     </Link>
                 )}
-                {user && (
+                {user?.type === UserType.ONG && (
                     <Link
-                        to="/settings"
-                        className={`navBtn ${location.pathname === '/settings' ? 'active' : ''}`}
-                        aria-label="Configurações"
+                        to="/pending-reports"
+                        className={`navBtn ${location.pathname === '/pending-reports' ? 'active' : ''}`}
+                        aria-label="Denúncias abertas"
                     >
-                        <Settings />
+                        <BadgeAlert />
                     </Link>
                 )}
             </nav>

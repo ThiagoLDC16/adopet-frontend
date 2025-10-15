@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react';
 import { reportService } from '../services/report.service';
 import type { Report } from '../types/report.types';
 
-export function useMyReports() {
+export function usePendingReports() {
     const [reports, setReports] = useState<Report[] | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
 
-    const fetchMyReports = async () => {
+    const fetchPendingReports = async () => {
         setLoading(true);
         setError(null);
         try {
 
-            const data = await reportService.getMyReports();
+            const data = await reportService.getPendingReports();
 
             setReports(data);
         } catch (err: any) {
@@ -24,7 +24,7 @@ export function useMyReports() {
     };
 
     useEffect(() => {
-        fetchMyReports();
+        fetchPendingReports();
     }, []);
 
 
@@ -32,6 +32,6 @@ export function useMyReports() {
         reports,
         loading,
         error,
-        refetch: () => fetchMyReports(),
+        refetch: () => fetchPendingReports(),
     };
 }

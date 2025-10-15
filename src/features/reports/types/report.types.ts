@@ -24,7 +24,7 @@ export interface Report {
 
 export const ReportStatus = {
     PENDING: "PENDING",
-    VALIDATED: "VALIDATED",
+    UNDER_REVIEW: "UNDER_REVIEW",
     REJECTED: "REJECTED",
     IN_PROGRESS: "IN_PROGRESS",
     RESOLVED: "RESOLVED"

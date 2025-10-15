@@ -9,6 +9,7 @@ import { ListAnimalsPage } from '@/features/animals/pages/ListAnimalsPage';
 import { MyAnimalsPage } from '@/features/animals/pages/MyAnimalsPage';
 import { AnimalDetailsPage } from '@/features/animals/pages/AnimalDetailsPage';
 import { MyReportsPage } from '@/features/reports/pages/MyReportsPage';
+import { PendingReportsPage } from '@/features/reports/pages/PendingReportsPage';
 
 const router = createBrowserRouter([
   {
@@ -47,12 +48,23 @@ const router = createBrowserRouter([
     ]
   },
   {
-    element: <ProtectedRoute userType={UserType.USER} />,
+    element: <ProtectedRoute />,
     children: [
       {
         element: <DefaultLayout />,
         children: [
           { path: "/my-reports", element: <MyReportsPage /> },
+        ],
+      },
+    ]
+  },
+  {
+    element: <ProtectedRoute userType={UserType.ONG} />,
+    children: [
+      {
+        element: <DefaultLayout />,
+        children: [
+          { path: "/pending-reports", element: <PendingReportsPage /> },
         ],
       },
     ]

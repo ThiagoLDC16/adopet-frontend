@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useHookFormMask } from 'use-mask-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,7 +60,6 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 export function RegisterPage() {
     const [error, setError] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
-    const navigate = useNavigate();
 
     const {
         register,
@@ -88,7 +87,7 @@ export function RegisterPage() {
 
             const { token } = await response.data;
             localStorage.setItem('token', token);
-            navigate('/');
+            window.location.href = '/'
         } catch (err: any) {
             setError(err instanceof Error ? err.message : 'Ocorreu um erro durante o cadastro');
         } finally {
