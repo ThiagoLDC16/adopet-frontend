@@ -7,12 +7,11 @@ import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHead
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useData } from '../hooks/useData';
-import { useNavigate } from 'react-router-dom';
 
-export function EditAnimalDialog({ id }: { id: number }) {
+export function EditAnimalDialog({ id, setIsOpen, fetchMyAnimals }: { id: number, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchMyAnimals: () => Promise<void> }) {
     const animalData = useData(`/api/animal/${id}`);
     const [ newFiles, setNewFiles ] = useState<File[]>([])
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const [display, setDisplay] = useState(false);
 
     const { register, handleSubmit, setValue, reset } = useForm<EditAnimalSchema>({
@@ -80,11 +79,13 @@ export function EditAnimalDialog({ id }: { id: number }) {
             .then(response => {
                 console.log("Animal editado " + response);
                 setDisplay(true);
-                navigate('/animals/' + id)
+                setIsOpen(false);
+                fetchMyAnimals();
             })
             .catch(e => {
                 console.log(e);
             })
+        
     }
 
     return (
@@ -148,8 +149,6 @@ export function EditAnimalDialog({ id }: { id: number }) {
                     <Label htmlFor="adopterEmail">Email do adotante</Label>
                     <Input className="col-span-3" id="adopterEmail" {...register('adopterEmail')} placeholder="Opcional" />
                 </div>
-
-                {display && <p className='text-right text-xl my-3 text-green-500'>Animal editado!</p>}
 
                 <DialogFooter className="flex-row justify-end mt-4">
                     <DialogClose>

@@ -45,7 +45,7 @@ export function MyReportsPage() {
 
 
       <div className="sectionLabel">Minhas denúncias registradas</div>
-      {user?.type == UserType.USER && <CreateReportDialogButton />}
+      {user?.type == UserType.USER && <CreateReportDialogButton fetchReports={refetch}/>}
 
       {/* List */}
       <section className="list mt-3" aria-label="Lista das minhas denúncias">

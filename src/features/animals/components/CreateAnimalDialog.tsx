@@ -7,7 +7,7 @@ import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHead
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function CreateAnimalDialog() {
+export function CreateAnimalDialog({setIsOpen, fetchMyAnimals}: {setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchMyAnimals: () => Promise<void>}) {
     const { register, handleSubmit, setValue } = useForm<CreateAnimalSchema>()
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(false)
@@ -43,6 +43,8 @@ export function CreateAnimalDialog() {
                 console.log("Animal cadastrado " + response);
                 setLoading(false)
                 setDisplay(true);
+                setIsOpen(false);
+                fetchMyAnimals();
             })
             .catch(e => {
                 console.log(e);
@@ -100,6 +102,7 @@ export function CreateAnimalDialog() {
                         <Button type="button" variant="destructive" className="px-6">Cancelar</Button>
                     </DialogClose>
                     <Button type="submit" variant="default" className="px-8">Salvar</Button>
+                    
                 </DialogFooter>
             </form>
         </DialogContent>

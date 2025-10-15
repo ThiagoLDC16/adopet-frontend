@@ -16,10 +16,11 @@ import { useState } from "react"
 
 interface animalProps {
     id: number,
-    name: string
+    name: string,
+    fetchMyAnimals: () => Promise<void>
 }
 
-export const DeleteButton = ({ id, name }: animalProps) => {
+export const DeleteButton = ({ id, name, fetchMyAnimals }: animalProps) => {
     const [open, setOpen] = useState(false)
 
 
@@ -28,6 +29,7 @@ export const DeleteButton = ({ id, name }: animalProps) => {
         try {
             await api.delete(`/api/animal/${id}`)
             setOpen(false)
+            await fetchMyAnimals();
         } catch (error) {
             console.error(error)
         }

@@ -56,8 +56,8 @@ export const ReportCard = ({ report, fetchReports }: { report: Report, fetchRepo
                     {
                         user?.type == UserType.USER
                             ? <>
-                                <EditReportDialogButton report={report} />
-                                <DeleteButton id={report.id} />
+                                <EditReportDialogButton report={report} fetchReports={fetchReports}/>
+                                <DeleteButton id={report.id} fetchReports={fetchReports}/>
                             </>
                             : <>
                                 {report.status === ReportStatus.PENDING && <SendReportToReviewDialogButton id={report.id} fetchReports={fetchReports} />}

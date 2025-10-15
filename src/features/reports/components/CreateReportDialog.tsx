@@ -20,7 +20,7 @@ type reportSchemaProps = {
     user?: User
 }
 
-export function CreateReportDialog() {
+export function CreateReportDialog({setIsOpen, fetchReports}: {setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchReports: () => Promise<void>}) {
     const { register, handleSubmit, setValue } = useForm<reportSchemaProps>()
     const [loading, setLoading] = useState(false)
     const [display, setDisplay] = useState(false);
@@ -45,6 +45,8 @@ export function CreateReportDialog() {
             await api.post("/api/report/register", formData)
             setLoading(false)
             setDisplay(true);
+            setIsOpen(false);
+            await fetchReports();
         } catch (error) {
             console.log(error)
         }
@@ -83,7 +85,6 @@ export function CreateReportDialog() {
                     <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
                 </div>
                 {loading && <p className='text-right text-xl my-3 text-blue-500'>Carregando...</p>}
-                {display && <p className='text-right text-xl my-3 text-green-500'>Denúncia registrada!</p>}
 
                 <DialogFooter className="flex-row justify-end mt-4">
                     <DialogClose asChild>

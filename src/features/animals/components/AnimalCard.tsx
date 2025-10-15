@@ -6,10 +6,11 @@ import { getImageUrl } from '@/lib/getImageURL';
 
 interface AnimalCardProps {
   animal: Animal;
-  isMyAnimalsPage: boolean
+  isMyAnimalsPage: boolean;
+  fetchMyAnimals: () => Promise<void>
 }
 
-export function AnimalCard({ animal, isMyAnimalsPage }: AnimalCardProps) {
+export function AnimalCard({ animal, isMyAnimalsPage, fetchMyAnimals }: AnimalCardProps) {
   const getSpeciesName = (species: string) => {
     switch (species) {
       case 'DOG': return 'Cachorro';
@@ -67,8 +68,8 @@ export function AnimalCard({ animal, isMyAnimalsPage }: AnimalCardProps) {
         </small> */}
       </div>
       {isMyAnimalsPage && <div className='flex justify-end gap-3'>
-        <EditAnimalDialogButton id={animal.id} />
-        <DeleteButton id={animal.id} name={animal.name} />
+        <EditAnimalDialogButton id={animal.id} fetchMyAnimals={fetchMyAnimals}/>
+        <DeleteButton id={animal.id} name={animal.name} fetchMyAnimals={fetchMyAnimals}/>
       </div>}
 
     </article>

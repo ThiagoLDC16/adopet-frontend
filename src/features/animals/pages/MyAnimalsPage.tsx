@@ -6,7 +6,7 @@ import type { AnimalFilters as IAnimalFilters } from '../types/animal.types';
 import { CreateAnimalDialogButton } from '../components/CreateAnimalDialogButton';
 
 export function MyAnimalsPage() {
-  const { animals, loading, error, filters, updateFilters } = useMyAnimals();
+  const { animals, loading, error, filters, updateFilters, refetch } = useMyAnimals();
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
@@ -102,7 +102,7 @@ export function MyAnimalsPage() {
       )}
 
       <div className="sectionLabel">Meus pets cadastrados</div>
-      <CreateAnimalDialogButton />
+      <CreateAnimalDialogButton fetchMyAnimals={refetch}/>
 
       {/* List */}
       <section className="list mt-3" aria-label="Lista de meus animais">
@@ -112,7 +112,7 @@ export function MyAnimalsPage() {
           </div>
         ) : (
           animals?.animals.map((animal) => (
-            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={true} />
+            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={true} fetchMyAnimals={refetch}/>
           ))
         )}
       </section>

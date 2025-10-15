@@ -21,7 +21,7 @@ type reportSchemaProps = {
     user?: User
 }
 
-export function EditReportDialog({ report }: { report: Report }) {
+export function EditReportDialog({ report, setIsOpen, fetchReports }: { report: Report, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchReports: () => Promise<void> }) {
 
 
 
@@ -62,6 +62,8 @@ export function EditReportDialog({ report }: { report: Report }) {
             await api.put(`/api/report/${report.id}`, formData)
             setLoading(false)
             setDisplay(true);
+            setIsOpen(false);
+            await fetchReports();
         } catch (error) {
             console.log(error)
         }
@@ -125,7 +127,6 @@ export function EditReportDialog({ report }: { report: Report }) {
                 </div>
 
                 {loading && <p className='text-right text-xl my-3 text-blue-500'>Carregando...</p>}
-                {display && <p className='text-right text-xl my-3 text-green-500'>Denúncia atualizada!</p>}
 
                 <DialogFooter className="flex-row justify-end mt-4">
                     <DialogClose asChild>
