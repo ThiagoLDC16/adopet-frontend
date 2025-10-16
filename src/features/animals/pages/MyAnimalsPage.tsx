@@ -105,7 +105,7 @@ export function MyAnimalsPage() {
       <CreateAnimalDialogButton fetchMyAnimals={refetch}/>
 
       {/* List */}
-      <section className="list mt-3" aria-label="Lista de meus animais">
+      <section className={`list mt-3 block ${animals && animals.animals.length > 0 ? "md:grid md:grid-cols-2" : ""} `} aria-label="Lista de meus animais">
         {animals?.animals.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">Você ainda não cadastrou nenhum animal</p>
