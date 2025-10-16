@@ -48,7 +48,7 @@ export function MyReportsPage() {
       {user?.type == UserType.USER && <CreateReportDialogButton />}
 
       {/* List */}
-      <section className="list mt-3" aria-label="Lista das minhas denúncias">
+      <section className={`list mt-3  block  ${reports && reports.length > 0 ? "md:grid md:grid-cols-2" : ""}`} aria-label="Lista das minhas denúncias">
         {reports && reports.length > 0 ? reports.map(item => <ReportCard key={item.id} report={item} fetchReports={refetch} />)
           : <div className="text-center py-12">
             <p className="text-gray-500 text-lg">

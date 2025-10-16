@@ -47,7 +47,7 @@ export function AnimalDetailsPage() {
                 <button type="button" className="btn">Ordenar</button>
             </form>
             <Sheet open={open} onOpenChange={handleOpenChange}>
-                <SheetContent side="bottom" className="h-[90vh] rounded-t-3xl bg-secondary">
+                <SheetContent side="bottom" className="h-[90vh] rounded-t-3xl bg-secondary ">
 
                     {/* fiz a verificação de loading e error aqui dentro pra ele poder renderizar o efeito da pagina subindo */}
 
@@ -61,32 +61,39 @@ export function AnimalDetailsPage() {
                             <div className="text-red-600">Erro: {error}</div>
                         </div>) :
                         <>
-                            <SheetHeader>
+                            <SheetHeader className='max-w-4xl w-full mx-auto'>
                                 <SheetTitle>Detalhes do pet</SheetTitle>
                             </SheetHeader>
-                            <div className='px-4'>
-                                <div className="flex items-start justify-center gap-2 mb-4">
-                                    <div className='flex-1 overflow-hidden rounded-md max-h-[120px] h-[120px]'>
+                            <div className='px-4 max-w-4xl w-full mx-auto'>
+                                <div className="flex items-stretch justify-center gap-2 mb-4">
+                                    <div className="flex-1 overflow-hidden rounded-md max-h-[200px] object-center">
                                         {findPhotoOrNull() ? (
                                             <img
+                                                className="w-full h-full object-cover object-center"
                                                 src={getImageUrl(findPhotoOrNull()?.url) ?? "/"}
-                                                alt={animal?.name ?? 'Animal'}
-                                            />) :
-                                            (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-400 border-gray-400 border-[1px] rounded-md">
-                                                    Sem foto
-                                                </div>
-                                            )}
+                                                alt={animal?.name ?? "Animal"}
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-gray-400 border-gray-400 border-[1px] rounded-md">
+                                                Sem foto
+                                            </div>
+                                        )}
                                     </div>
 
-                                    <div className='flex-1 text-primary text-lg'>
-                                        <p>{animal?.name}</p>
-                                        <p>{animal?.breed}</p>
-                                        <p>{animal?.age} {animal?.age === 1 ? "ano" : "anos"}</p>
-                                        <p>{animal?.characteristics.map((item, index) => {
+                                    <div className='flex-1 text-primary text-lg p-4 bg-background rounded-md divide-y divide-accent-foreground/10'>
+                                        <p className='font-bold'>{animal?.name}</p>
+                                        <p className='text-sm'>{animal?.breed}</p>
+                                        <p className='text-sm'>{animal?.age} {animal?.age === 1 ? "ano" : "anos"}</p>
+                                        <p className='text-sm'>{animal?.characteristics.map((item, index) => {
                                             const finalItem = index + 1 === animal?.characteristics.length
                                             return item.characteristic.description + (finalItem ? " " : ", ")
                                         })}</p>
+                                    </div>
+                                    <div className="flex-1 flex items-center justify-center p-4 bg-background rounded-md">
+                                        <p className='text-center'>
+                                            {animal?.description}
+
+                                        </p>
                                     </div>
                                 </div>
 
@@ -95,12 +102,7 @@ export function AnimalDetailsPage() {
                                     <ShareButton title={`Conheça o ${animal?.name}`} text={`${animal?.name} parece ser um ótimo animal para adoção!`} url={window.location.href} />
                                 </div>
 
-                                <div className="p-4 bg-background rounded-md mb-4">
-                                    <p className='text-center'>
-                                        {animal?.description}
 
-                                    </p>
-                                </div>
                                 <AnimalMidiasCarousel midias={animal?.midia ?? []} name={animal?.name ?? ""} />
 
                             </div>

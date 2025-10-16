@@ -103,7 +103,7 @@ export function ListAnimalsPage() {
       <div className="sectionLabel">Pets disponíveis na região</div>
 
       {/* List */}
-      <section className="list" aria-label="Lista de animais">
+      <section className={`list block ${animals && animals.animals.length > 0 ? "md:grid md:grid-cols-2" : ""} `} aria-label="Lista de animais">
         {animals?.animals.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">Nenhum animal encontrado</p>
