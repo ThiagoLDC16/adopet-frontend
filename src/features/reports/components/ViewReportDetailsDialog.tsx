@@ -87,7 +87,7 @@ export function ViewReportDetailsDialog({ report }: { report: Report }) {
                 <div key={media.id} className="relative group">
                   {media.type === 'image' ? (
                     <img
-                      src={media.url}
+                      src={import.meta.env.VITE_API_URL + media.url}
                       alt={`Mídia ${index + 1}`}
                       className="w-full h-32 object-cover rounded-lg border"
                     />
