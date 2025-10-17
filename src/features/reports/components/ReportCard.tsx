@@ -5,6 +5,7 @@ import { DeleteButton } from "./DeleteButton";
 import { useAuth } from "@/features/auth/contexts/AuthContext";
 import { UserType } from "@/features/auth/types";
 import { SendReportToReviewDialogButton } from "./SendReportToReviewDialogButton";
+import { ViewReportButton } from "./ViewReportButton";
 
 
 export const ReportCard = ({ report, fetchReports }: { report: Report, fetchReports?: () => Promise<void> }) => {
@@ -51,20 +52,21 @@ export const ReportCard = ({ report, fetchReports }: { report: Report, fetchRepo
             </div>
 
 
-            {count < 1 &&
-                <div className="flex gap-2">
+            <div className="flex gap-2">
+                <ViewReportButton report={report} />
+                {count < 1 && <>
                     {
                         user?.type == UserType.USER
                             ? <>
-                                <EditReportDialogButton report={report} fetchReports={fetchReports}/>
-                                <DeleteButton id={report.id} fetchReports={fetchReports}/>
+                                <EditReportDialogButton report={report} fetchReports={fetchReports} />
+                                <DeleteButton id={report.id} fetchReports={fetchReports} />
                             </>
                             : <>
                                 {report.status === ReportStatus.PENDING && <SendReportToReviewDialogButton id={report.id} fetchReports={fetchReports} />}
                             </>
-                    }
-                </div>
-            }
+                    }</>
+                }
+            </div>
         </div>
 
 

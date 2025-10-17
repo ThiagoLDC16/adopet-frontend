@@ -24,7 +24,6 @@ export function MyReportsPage() {
     );
   }
 
-
   return (
     <div className="page-content">
       <h1>Minhas denúncias</h1>
