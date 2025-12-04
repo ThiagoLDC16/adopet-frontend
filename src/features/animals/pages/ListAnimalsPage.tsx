@@ -2,7 +2,7 @@ import { useAnimals } from '../hooks/useAnimals';
 import { AnimalCard } from '../components/AnimalCard';
 
 export function ListAnimalsPage() {
-  const { animals, loading, error } = useAnimals();
+  const { animals, loading, error, refetch } = useAnimals();
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-96">
@@ -33,7 +33,7 @@ export function ListAnimalsPage() {
           </div>
         ) : (
           animals?.animals.map((animal) => (
-            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={false} />
+            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={false} fetchMyAnimals={refetch} />
           ))
         )}
       </section>
