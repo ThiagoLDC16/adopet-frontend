@@ -45,7 +45,9 @@ export function DefaultLayout() {
             </main>
 
             {/* Bottom Navigation */}
-            <nav className={`grid gap-2.5 py-2 px-4 ${user?.type == UserType.ONG ? 'grid-cols-4' : 'grid-cols-3'}`} aria-label="Navegação principal">
+            <div className="fixed bottom-0 left-0 w-full border-t bg-">
+                <nav className={`grid gap-2.5 py-2 px-4 ${user?.type == UserType.ONG ? 'grid-cols-4' : 'grid-cols-3'} 
+                `} aria-label="Navegação principal">
                 <Link
                     to="/animals"
                     className={`navBtn ${location.pathname === '/animals' ? 'active' : ''}`}
@@ -81,6 +83,8 @@ export function DefaultLayout() {
                     </Link>
                 )}
             </nav>
+            </div>
+            
         </div>
     );
 }
