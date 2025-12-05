@@ -3,15 +3,18 @@ import { useMyAnimals } from '../hooks/useMyAnimals';
 import { AnimalCard } from '../components/AnimalCard';
 import { CreateAnimalDialogButton } from '../components/CreateAnimalDialogButton';
 import { Alert, AlertTitle } from '@/components/ui/alert';
-import { X } from 'lucide-react'
+import { X, Trash2, CheckCircle2, Trash } from 'lucide-react'
+import type { PetListChangeType } from '../types/animal.types';
 
 export function MyAnimalsPage() {
   const { animals, loading, error, refetch } = useMyAnimals();
-  const [petAdded, setPetAdded] = useState(false);
+  const [petListChange, setPetListChange] = useState<PetListChangeType>({
+    action: null
+  });
 
   setTimeout(() => {
-    if (petAdded) {
-      setPetAdded(false);
+    if (petListChange.action) {
+      setPetListChange({ action: null });
     }
   }, 5000);
 
@@ -33,11 +36,26 @@ export function MyAnimalsPage() {
 
   return (
     <div className="page-content">
-      {petAdded && (
+      {petListChange.action === 'added' && (
         <div className='flex justify-end'>
-          <Alert className='bg-green-300 border-2 border-green-600 mt-2 flex justify-between items-center cursor-pointer max-w-2xs'
-            onClick={() => setPetAdded(false)}>
-            <AlertTitle>Animal cadastrado com sucesso!</AlertTitle>
+          <Alert className='bg-green-300 border-2 border-green-600 mt-2 flex justify-between items-center cursor-pointer max-w-xs'
+            onClick={() => setPetListChange({ action: null })}>
+            <div className='flex items-center gap-2'>
+              <CheckCircle2 />
+              <AlertTitle>Animal cadastrado com sucesso!</AlertTitle>
+            </div>
+            <X />
+          </Alert>
+        </div>
+      )}
+      {petListChange.action === 'deleted' && (
+        <div className='flex justify-end'>
+          <Alert className='bg-red-300 border-2 border-red-600 mt-2 flex justify-between items-center cursor-pointer max-w-xs'
+            onClick={() => setPetListChange({ action: null })}>
+            <div className='flex items-center gap-2'>
+              <Trash2 />
+              <AlertTitle>Animal removido</AlertTitle>
+            </div>
             <X />
           </Alert>
         </div>
@@ -45,7 +63,7 @@ export function MyAnimalsPage() {
       <h1>Meus Animais</h1>
 
       <div className="sectionLabel">Meus pets cadastrados</div>
-      <CreateAnimalDialogButton fetchMyAnimals={refetch} onAddAnimal={setPetAdded}/>
+      <CreateAnimalDialogButton fetchMyAnimals={refetch} onAddAnimal={setPetListChange} />
 
 
       {/* List */}
@@ -56,7 +74,8 @@ export function MyAnimalsPage() {
           </div>
         ) : (
           animals?.animals.map((animal) => (
-            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={true} fetchMyAnimals={refetch} />
+            <AnimalCard key={animal.id} animal={animal} isMyAnimalsPage={true} fetchMyAnimals={refetch}
+              onDeleteAnimal={setPetListChange} />
           ))
         )}
       </section>

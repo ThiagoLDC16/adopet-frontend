@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 import { EditAnimalDialogButton } from './EditAnimalDialogButton';
 import { DeleteButton } from './DeleteButton';
 import { getImageUrl } from '@/lib/getImageURL';
+import type { PetListChangeType } from '../types/animal.types';
 
 interface AnimalCardProps {
   animal: Animal;
   isMyAnimalsPage: boolean;
-  fetchMyAnimals: () => Promise<void>
+  fetchMyAnimals: () => Promise<void>,
+  onDeleteAnimal: React.Dispatch<React.SetStateAction<PetListChangeType>>
 }
 
-export function AnimalCard({ animal, isMyAnimalsPage, fetchMyAnimals }: AnimalCardProps) {
+export function AnimalCard({ animal, isMyAnimalsPage, fetchMyAnimals, onDeleteAnimal }: AnimalCardProps) {
   const getSpeciesName = (species: string) => {
     switch (species) {
       case 'DOG': return 'Cachorro';
@@ -69,7 +71,8 @@ export function AnimalCard({ animal, isMyAnimalsPage, fetchMyAnimals }: AnimalCa
       </div>
       {isMyAnimalsPage && <div className='flex justify-end gap-3'>
         <EditAnimalDialogButton id={animal.id} fetchMyAnimals={fetchMyAnimals}/>
-        <DeleteButton id={animal.id} name={animal.name} fetchMyAnimals={fetchMyAnimals}/>
+        <DeleteButton id={animal.id} name={animal.name} fetchMyAnimals={fetchMyAnimals}
+        onDeleteAnimal={onDeleteAnimal}/>
       </div>}
 
     </article>

@@ -12,15 +12,17 @@ import {
 import { api } from "@/lib/api"
 import { Trash } from "lucide-react"
 import { useState } from "react"
+import type { PetListChangeType } from '../types/animal.types';
 
 
 interface animalProps {
     id: number,
     name: string,
-    fetchMyAnimals: () => Promise<void>
+    fetchMyAnimals: () => Promise<void>,
+    onDeleteAnimal: React.Dispatch<React.SetStateAction<PetListChangeType>>
 }
 
-export const DeleteButton = ({ id, name, fetchMyAnimals }: animalProps) => {
+export const DeleteButton = ({ id, name, fetchMyAnimals, onDeleteAnimal: setPetListChange }: animalProps) => {
     const [open, setOpen] = useState(false)
 
 
@@ -29,6 +31,7 @@ export const DeleteButton = ({ id, name, fetchMyAnimals }: animalProps) => {
         try {
             await api.delete(`/api/animal/${id}`)
             setOpen(false)
+            setPetListChange({action: 'deleted'});
             await fetchMyAnimals();
         } catch (error) {
             console.error(error)

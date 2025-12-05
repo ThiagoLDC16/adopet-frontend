@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { PetListChangeType } from '../types/animal.types';
 
 type CreateAnimalDialogProps = {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
     fetchMyAnimals: () => Promise<void>,
-    onAddAnimal: React.Dispatch<React.SetStateAction<boolean>>
+    onAddAnimal: React.Dispatch<React.SetStateAction<PetListChangeType>>
 }
 
 type ImageErrorsType = {
@@ -18,7 +19,7 @@ type ImageErrorsType = {
     message?: string
 }
 
-export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: setPetAdded }: CreateAnimalDialogProps) {
+export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: setPetListChange }: CreateAnimalDialogProps) {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<CreateAnimalSchema>()
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -48,7 +49,7 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: set
                     setDisplay(true);
                     setIsOpen(false);
                     fetchMyAnimals();
-                    setPetAdded(true);
+                    setPetListChange({action: 'added'});
                 })
                 .catch(e => {
                     console.log(e);

@@ -78,3 +78,7 @@ export interface UpdateAnimalData {
   city?: string;
   state?: string;
 }
+
+export type PetListChangeType = {
+  action: 'added' | 'deleted' | 'edited' | null
+}

@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { CreateAnimalDialog } from "./CreateAnimalDialog";
 import { useState } from "react";
+import type { PetListChangeType } from '../types/animal.types';
 
 type CreateAnimalDialogButtonProps = {
     fetchMyAnimals: () => Promise<void>,
-    onAddAnimal: React.Dispatch<React.SetStateAction<boolean>>
+    onAddAnimal: React.Dispatch<React.SetStateAction<PetListChangeType>>
 }
 
 export function CreateAnimalDialogButton({fetchMyAnimals, onAddAnimal}: CreateAnimalDialogButtonProps) {
