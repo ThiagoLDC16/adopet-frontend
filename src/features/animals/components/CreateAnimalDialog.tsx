@@ -7,7 +7,13 @@ import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHead
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, fetchMyAnimals: () => Promise<void> }) {
+type CreateAnimalDialogProps = {
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
+    fetchMyAnimals: () => Promise<void>,
+    onAddAnimal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal : setPetAdded }: CreateAnimalDialogProps) {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<CreateAnimalSchema>()
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -53,6 +59,7 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals }: { setIsOpen: R
                     setDisplay(true);
                     setIsOpen(false);
                     fetchMyAnimals();
+                    setPetAdded(true);
                 })
                 .catch(e => {
                     console.log(e);

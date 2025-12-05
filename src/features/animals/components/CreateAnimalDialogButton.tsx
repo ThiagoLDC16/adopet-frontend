@@ -3,7 +3,12 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { CreateAnimalDialog } from "./CreateAnimalDialog";
 import { useState } from "react";
 
-export function CreateAnimalDialogButton({fetchMyAnimals}: {fetchMyAnimals: () => Promise<void>}) {
+type CreateAnimalDialogButtonProps = {
+    fetchMyAnimals: () => Promise<void>,
+    onAddAnimal: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export function CreateAnimalDialogButton({fetchMyAnimals, onAddAnimal}: CreateAnimalDialogButtonProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     return(
@@ -14,7 +19,9 @@ export function CreateAnimalDialogButton({fetchMyAnimals}: {fetchMyAnimals: () =
                 </Button>
             </DialogTrigger>
 
-            <CreateAnimalDialog setIsOpen={setIsOpen} fetchMyAnimals={fetchMyAnimals}/>
+            <CreateAnimalDialog setIsOpen={setIsOpen} 
+            fetchMyAnimals={fetchMyAnimals}
+            onAddAnimal={onAddAnimal}/>
         </Dialog>
     )
 }
