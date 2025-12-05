@@ -24,7 +24,7 @@ export function AnimalFilters({ filters, onFiltersChange }: AnimalFiltersProps) 
   return (
     <>
       <details className="filter" open={isOpen} onToggle={(e) => setIsOpen(e.currentTarget.open)}>
-        <summary className="btn">Filtrar</summary>
+        <summary className="btn" style={{paddingTop: '5px'}}>Filtrar</summary>
         <div className="menu" role="menu" aria-label="Filtros">
           <button 
             role="menuitem" 

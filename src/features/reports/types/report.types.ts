@@ -1,5 +1,3 @@
-import type { User } from "@/features/auth/types"
-
 export interface Midia {
     id: number
     type: string
@@ -20,6 +18,10 @@ export interface Report {
     location: string
     status: ReportStatus
     userId: number
+    user: {
+      id: number;
+      name: string;
+    }
 }
 
 export const ReportStatus = {
@@ -28,6 +30,32 @@ export const ReportStatus = {
     REJECTED: "REJECTED",
     IN_PROGRESS: "IN_PROGRESS",
     RESOLVED: "RESOLVED"
-} as const;
+};
 
 export type ReportStatus = typeof ReportStatus[keyof typeof ReportStatus];
+
+export interface ReportFilters {
+  status?: ReportStatus;
+  dateFrom?: string;
+  dateTo?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface ReportListResponse {
+  reports: Report[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
+export interface CreateReportData {
+  description: string;
+  details: string;
+  ocurrenceDate: Date;
+  location: string;
+  midia: FileList;
+  user?: any;
+}

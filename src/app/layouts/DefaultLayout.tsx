@@ -15,7 +15,7 @@ export function DefaultLayout() {
     }
 
     return (
-        <div className="shell">
+        <div className="shell max-w-4xl w-full mx-auto">
             {/* Topbar */}
             <div className="topbar">
                 <div className="flex w-full gap-3 justify-between">
@@ -40,7 +40,7 @@ export function DefaultLayout() {
             </div>
 
             {/* Page Content */}
-            <main className="page">
+            <main className="page w-full">
                 <Outlet />
             </main>
 
@@ -50,7 +50,7 @@ export function DefaultLayout() {
                 `} aria-label="Navegação principal">
                 <Link
                     to="/animals"
-                    className={`navBtn ${location.pathname === '/animals' ? 'active' : ''}`}
+                    className={`navBtn ${user ? "flex-1" : "w-1/4"} ${location.pathname === '/animals' ? 'active' : ''}`}
                     aria-label="Animais para Adoção"
                 >
                     <PawPrint />
@@ -58,7 +58,7 @@ export function DefaultLayout() {
                 {user?.type === UserType.ONG && (
                     <Link
                         to="/my-animals"
-                        className={`navBtn ${location.pathname === '/my-animals' ? 'active' : ''}`}
+                        className={`navBtn  flex-1 ${location.pathname === '/my-animals' ? 'active' : ''}`}
                         aria-label="Meus Animais"
                     >
                         <Dog />
@@ -67,7 +67,7 @@ export function DefaultLayout() {
                 {user?.type && (
                     <Link
                         to="/my-reports"
-                        className={`navBtn ${location.pathname === '/my-reports' ? 'active' : ''}`}
+                        className={`navBtn flex-1 ${location.pathname === '/my-reports' ? 'active' : ''}`}
                         aria-label="Minhas denúncias"
                     >
                         {user.type === UserType.USER ? <BadgeAlert /> : <ClipboardList />}
@@ -76,7 +76,7 @@ export function DefaultLayout() {
                 {user?.type === UserType.ONG && (
                     <Link
                         to="/pending-reports"
-                        className={`navBtn ${location.pathname === '/pending-reports' ? 'active' : ''}`}
+                        className={`navBtn flex-1 ${location.pathname === '/pending-reports' ? 'active' : ''}`}
                         aria-label="Denúncias abertas"
                     >
                         <BadgeAlert />

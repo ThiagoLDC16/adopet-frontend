@@ -44,7 +44,7 @@ export function PendingReportsPage() {
       <div className="sectionLabel">Denúncias registradas</div>
 
       {/* List */}
-      <section className="list mt-3" aria-label="Denúncias Pendentes">
+      <section className={`list mt-3  block  ${reports && reports.length > 0 ? "md:grid md:grid-cols-2" : ""}`} aria-label="Denúncias Pendentes">
         {reports && reports.length > 0 ? reports.map(item => <ReportCard key={item.id} report={item} fetchReports={refetch} />)
           : <div className="text-center py-12">
             <p className="text-gray-500 text-lg">Nenhuma denúncia está pendente de triagem.</p>
