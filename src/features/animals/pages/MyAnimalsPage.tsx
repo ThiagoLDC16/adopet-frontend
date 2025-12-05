@@ -7,7 +7,7 @@ import { X } from 'lucide-react'
 
 export function MyAnimalsPage() {
   const { animals, loading, error, refetch } = useMyAnimals();
-  const [petAdded, setPetAdded] = useState(true);
+  const [petAdded, setPetAdded] = useState(false);
 
   setTimeout(() => {
     if (petAdded) {

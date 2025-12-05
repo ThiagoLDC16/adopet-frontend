@@ -13,11 +13,17 @@ type CreateAnimalDialogProps = {
     onAddAnimal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal : setPetAdded }: CreateAnimalDialogProps) {
+type ImageErrorsType = {
+    error: boolean,
+    message?: string
+}
+
+export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: setPetAdded }: CreateAnimalDialogProps) {
     const { register, handleSubmit, setValue, formState: { errors } } = useForm<CreateAnimalSchema>()
     const [display, setDisplay] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [hasImage, setHasImage] = useState(true);
+    const [imageErrors, setImageErrors] = useState<ImageErrorsType>({ error: false });
+    const [newFiles, setNewFiles] = useState<File[]>([])
 
     type CreateAnimalSchema = {
         name: string,
@@ -29,25 +35,8 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal : se
         midia: FileList
     }
 
-    function handleCreateAnimal(data: CreateAnimalSchema) {
-        const formData = new FormData()
-        formData.append("name", data.name)
-        formData.append("age", data.age)
-        formData.append("species", data.species)
-        formData.append("breed", data.breed)
-        formData.append("description", data.description)
-        formData.append("characteristics", data.characteristics)
-
-        if (data.midia) {
-            for (let i = 0; i < data.midia.length; i++) {
-                formData.append("midia", data.midia[i])
-            }
-            setHasImage(true);
-        } else {
-            setHasImage(false);
-        }
-
-        if (data.midia) {
+    function sendRequest(formData: FormData) {
+        if (!imageErrors.error) {
             setLoading(true)
             api.post(
                 "/api/animal/register",
@@ -64,9 +53,34 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal : se
                 .catch(e => {
                     console.log(e);
                     setLoading(false);
-                    
+
                 })
         }
+    }
+
+    function handleCreateAnimal(data: CreateAnimalSchema) {
+        const formData = new FormData()
+        formData.append("name", data.name)
+        formData.append("age", data.age)
+        formData.append("species", data.species)
+        formData.append("breed", data.breed)
+        formData.append("description", data.description)
+        formData.append("characteristics", data.characteristics)
+
+        if (data.midia) {
+            for (let i = 0; i < data.midia.length; i++) {
+                formData.append("midia", data.midia[i])
+            }
+        } else {
+            console.log("Nenhuma mídia enviada");
+            setImageErrors({
+                error: true,
+                message: 'É necessário enviar pelo menos uma mídia'
+            });
+            return;
+        }
+
+        sendRequest(formData);
     }
 
     return (
@@ -198,11 +212,34 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal : se
 
                 <div className="pt-4 grid grid-cols-4">
                     <Label htmlFor="midia">Fotos/vídeos</Label>
-                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => setValue("midia", e.target.files as FileList, { shouldValidate: false, })} />
+                    <Input className="col-span-3" id="midia" multiple type="file" onChange={(e) => {
+                        const files = Array.from(e.target.files ?? [])
+                        setValue("midia", e.target.files as FileList, { shouldValidate: false, })
+                        setNewFiles(files)
+                        for (const file of files) {
+                            if (file.type !== "image/jpeg" && file.type !== "image/png" && file.type !== "video/mp4" && file.type !== "image/jpg") {
+                                setImageErrors({
+                                    error: true,
+                                    message: 'Apenas arquivos do tipo imagem (jpeg, png) ou vídeo (mp4) são permitidos'
+                                });
+                                break;
+                            } else {
+                                setImageErrors({ error: false });
+                                console.log("Mídia adicionada", imageErrors)
+                            }
+                        }
+                    }
+                    } />
                 </div>
-                {!hasImage && <p className='text-right text-l mt-1 text-red-600'>Precisa de pelo menos uma mídia</p>}
+                {imageErrors && <p className='text-right text-l mt-1 text-red-600'>{imageErrors.message}</p>}
                 {loading && <p className='text-right text-xl my-3 text-blue-500'>Carregando...</p>}
-                
+                {newFiles.length > 0 && (
+                    <div className="mt-4 flex gap-2 overflow-x-auto">
+                        {newFiles.map((file, index) => (
+                            <img key={index} src={URL.createObjectURL(file)} alt={`Preview ${index}`} className="h-18 w-18 object-cover rounded" />
+                        ))}
+                    </div>
+                )}
 
                 <DialogFooter className="flex-row justify-end mt-4">
                     <DialogClose>
