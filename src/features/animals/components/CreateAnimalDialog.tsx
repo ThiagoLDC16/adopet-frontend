@@ -104,7 +104,7 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: set
                             message: 'Nome deve ter no mínimo 3 caracteres'
                         },
                         pattern: {
-                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀ]+$/i,
+                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀçÇ]+$/i,
                             message: 'Nome deve conter apenas letras'
                         }
 
@@ -148,7 +148,7 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: set
                             message: 'Espécie deve ter no mínimo 3 caracteres'
                         },
                         pattern: {
-                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀ]+$/i,
+                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀçÇ]+$/i,
                             message: 'Espécie deve conter apenas letras'
                         }
 
@@ -168,7 +168,7 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: set
                             message: 'Raça deve ter no mínimo 3 caracteres'
                         },
                         pattern: {
-                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀ]+$/i,
+                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀçÇ]+$/i,
                             message: 'Raça deve conter apenas letras'
                         }
 
@@ -204,7 +204,7 @@ export function CreateAnimalDialog({ setIsOpen, fetchMyAnimals, onAddAnimal: set
                             message: 'Características deve ter no mínimo 3 caracteres'
                         },
                         pattern: {
-                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀ, ]+$/i,
+                            value: /^[A-Za-zâãôõêéàÂÃÔÕÉÀçÇ, ]+$/i,
                             message: 'Características deve conter apenas letras e vírgulas'
                         }
                     })} placeholder="Separe por vírgulas" />
